@@ -1,0 +1,16 @@
+.cache
+*.docx
+
+*.m4a
+*.mp3
+*.webm
+*.mp4
+*.mpga
+*.wav
+*.mpeg
+*.ogg
+*.oga
+*.flac
+*.mkv
+
+openai_api_key.txt
