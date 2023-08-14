@@ -1,5 +1,6 @@
 import openai
 import json
+import sys
 from os import path
 from docx import Document
 
@@ -126,8 +127,8 @@ def __save_cache(audio_file_path, transcription = None, minutes = None):
 
 
 if __name__ == "__main__":
-    # The Whisper API only supports files that are less than 25 MB. Ref: https://platform.openai.com/docs/guides/speech-to-text/longer-inputs
-    audio_file_path = "whisper test.mp3"
+    if len(sys.argv) >= 2:
+        audio_file_path = sys.argv[1]
     cached = __load_cache(audio_file_path)
     transcription = cached['transcription'] if cached else None
     minutes = cached['minutes'] if cached else None
