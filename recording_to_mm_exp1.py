@@ -15,10 +15,12 @@ chat_model = 'gpt-3.5-turbo'
 
 MAX_TOKENS = 1000
 
-if "http_proxy" in os.environ:
-    del os.environ["http_proxy"]
+# if "http_proxy" in os.environ:
+#     del os.environ["http_proxy"]
 
 def OpenAiGPTQuery(prompt, query_text):
+    print(prompt)
+    print(query_text)
     response = openai.ChatCompletion.create(
         model=chat_model,
         temperature=0,
@@ -33,7 +35,9 @@ def OpenAiGPTQuery(prompt, query_text):
             }
         ]
     )
-    return response['choices'][0]['message']['content']
+    result = response['choices'][0]['message']['content']
+    print(result)
+    return result
 
 def transcribe_audio_locally(audio_file_path, model="base"):
     import whisper
@@ -42,7 +46,8 @@ def transcribe_audio_locally(audio_file_path, model="base"):
     return result["text"]
 
 def transcribe_for_test():
-    return ""
+    with open("transcribe_whisper.txt") as f:
+        return f.read()
 
 def transcribe_audio(audio_file_path):
     with open(audio_file_path, 'rb') as audio_file:
@@ -83,7 +88,7 @@ def sentiment_analysis(transcription):
     return OpenAiGPTQuery(prompt, transcription)
 
 def compress_text(text, max_tokens=MAX_TOKENS):
-    prompt = f"Please summarize the key details from the following meeting transcript in a comprehensive yet concise overview that is {max_tokens} words or less. Include all important information needed to thoroughly understand the key discussion points, decisions, action items, and outcomes from the meeting. Ensure the summary accurately represents the original content and context of the full transcript. Use clear, succinct language to convey the details precisely and efficiently within the word limit."
+    prompt = f"Please compress the following text to {max_tokens} words or less. Do not change or missing or add any information. Sentence by sentence. Do not miss any information. Make it as detailed as you can."
     return OpenAiGPTQuery(prompt, text)
 
 
